@@ -4,12 +4,15 @@
  * and open the template in the editor.
  */
 import java.io.*;
+import java.time.*;
+import java.util.*;
+import java.text.*;
 import javax.swing.JOptionPane;
 /**
  *
  * @author fx
  */
-public class MainForm extends javax.swing.JFrame {
+public class MainForm extends javax.swing.JFrame implements Runnable {
 
     /**
      * Creates new form MainForm
@@ -38,18 +41,30 @@ public class MainForm extends javax.swing.JFrame {
         lypAllievi = new javax.swing.JLayeredPane();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblAllievi = new javax.swing.JTable();
+        lypPromem = new javax.swing.JLayeredPane();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tblPromem = new javax.swing.JTable();
+        jLabel2 = new javax.swing.JLabel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        txrDescr = new javax.swing.JTextArea();
+        spnAllarme = new javax.swing.JSpinner();
+        ckbAllarme = new javax.swing.JCheckBox();
+        jLabel3 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         lblStato = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Gestione Centro Studi");
         addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
             public void windowOpened(java.awt.event.WindowEvent evt) {
                 formWindowOpened(evt);
             }
         });
 
-        btnUscita.setText("Esci...");
+        btnUscita.setText("Backup ed Esci...");
         btnUscita.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnUscitaActionPerformed(evt);
@@ -95,7 +110,7 @@ public class MainForm extends javax.swing.JFrame {
                         .addGroup(lypCorsiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
                             .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 201, Short.MAX_VALUE)))
+                        .addGap(0, 218, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         lypCorsiLayout.setVerticalGroup(
@@ -137,7 +152,7 @@ public class MainForm extends javax.swing.JFrame {
             .addGroup(lypAllieviLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(307, Short.MAX_VALUE))
+                .addContainerGap(324, Short.MAX_VALUE))
         );
         lypAllieviLayout.setVerticalGroup(
             lypAllieviLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -148,6 +163,94 @@ public class MainForm extends javax.swing.JFrame {
         );
 
         jTabbedPane1.addTab("ALLIEVI", lypAllievi);
+
+        tblPromem.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Descrizione", "Allarme"
+            }
+        ));
+        tblPromem.getTableHeader().setReorderingAllowed(false);
+        tblPromem.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblPromemMouseClicked(evt);
+            }
+        });
+        jScrollPane3.setViewportView(tblPromem);
+        tblPromem.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+
+        jLabel2.setText("Descrizione:");
+
+        txrDescr.setColumns(20);
+        txrDescr.setLineWrap(true);
+        txrDescr.setRows(5);
+        txrDescr.setWrapStyleWord(true);
+        jScrollPane4.setViewportView(txrDescr);
+
+        spnAllarme.setModel(new javax.swing.SpinnerDateModel());
+        spnAllarme.setEnabled(false);
+
+        ckbAllarme.setText("Imposta/Disattiva");
+        ckbAllarme.setEnabled(false);
+        ckbAllarme.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ckbAllarmeActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setText("Allarme:");
+
+        lypPromem.setLayer(jScrollPane3, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        lypPromem.setLayer(jLabel2, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        lypPromem.setLayer(jScrollPane4, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        lypPromem.setLayer(spnAllarme, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        lypPromem.setLayer(ckbAllarme, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        lypPromem.setLayer(jLabel3, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        javax.swing.GroupLayout lypPromemLayout = new javax.swing.GroupLayout(lypPromem);
+        lypPromem.setLayout(lypPromemLayout);
+        lypPromemLayout.setHorizontalGroup(
+            lypPromemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(lypPromemLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(lypPromemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane4)
+                    .addGroup(lypPromemLayout.createSequentialGroup()
+                        .addGroup(lypPromemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3)
+                            .addGroup(lypPromemLayout.createSequentialGroup()
+                                .addComponent(ckbAllarme)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(spnAllarme, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 87, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        lypPromemLayout.setVerticalGroup(
+            lypPromemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(lypPromemLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(lypPromemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(lypPromemLayout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(lypPromemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(ckbAllarme)
+                            .addComponent(spnAllarme, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 183, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+
+        jTabbedPane1.addTab("Note e Promemoria", lypPromem);
 
         lblStato.setText("Caricamento in corso...");
 
@@ -185,11 +288,7 @@ public class MainForm extends javax.swing.JFrame {
 
     private void btnUscitaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUscitaActionPerformed
         // TODO add your handling code here:
-        if ( JOptionPane.showConfirmDialog(null, "Confermi?", "Uscita dal programma...", JOptionPane.OK_CANCEL_OPTION,JOptionPane.WARNING_MESSAGE)
-             ==
-             JOptionPane.OK_OPTION )
-            
-            System.exit(0);
+        gestione_chiusura();
     }//GEN-LAST:event_btnUscitaActionPerformed
 
     private void tblCorsiMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblCorsiMouseClicked
@@ -202,7 +301,7 @@ public class MainForm extends javax.swing.JFrame {
         
         javax.swing.table.DefaultTableModel mdlTblCorsi;
 
-        BufferedReader bffRdr = null;  String line;
+        BufferedReader bffRdr = null;  String line;  String[] dati;
 
         
         mdlTblCorsi = (javax.swing.table.DefaultTableModel) tblCorsi.getModel();
@@ -214,8 +313,8 @@ public class MainForm extends javax.swing.JFrame {
             
             while ( (line = bffRdr.readLine()) != null )
             {
-                String[] dati = line.split( "," );
-
+                dati = line.split( "::" );
+                
                 // Stampa di controllo.
                 System.out.println( dati[0] + " , " + dati[1] + " , " + dati[2] + " , " + dati[3] );
 
@@ -240,8 +339,88 @@ public class MainForm extends javax.swing.JFrame {
         mdlTblAllievi = (javax.swing.table.DefaultTableModel) tblAllievi.getModel();
         mdlTblAllievi.addRow(new Object[] {"Allievo X",""});
         
+        
+        javax.swing.table.DefaultTableModel mdlTblPromem;
+
+        
+        mdlTblPromem = (javax.swing.table.DefaultTableModel) tblPromem.getModel();
+        
+
+        try {
+
+            bffRdr = new BufferedReader( new FileReader("promem.txt") );
+            
+            while ( (line = bffRdr.readLine()) != null )
+            {
+                dati = line.split( "::" );
+
+                // Stampa di controllo.
+                System.out.println( dati[0] + " (" + dati[1] + ")" );
+
+                mdlTblPromem.addRow( new Object[] { dati[0] , dati[1] } );
+            }
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (bffRdr != null) {
+                try {
+                    bffRdr.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
         lblStato.setText("Caricamento di tutti i dati terminato! Stato: OK");
+        
+        System.out.println(LocalDateTime.now());
+        (new Thread(this)).start();
     }//GEN-LAST:event_formWindowOpened
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        // TODO add your handling code here:
+        gestione_chiusura();
+    }//GEN-LAST:event_formWindowClosing
+
+    private void tblPromemMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblPromemMouseClicked
+        // TODO add your handling code here:
+        //dati[0]=dati[0].replaceAll("Q", "X");
+
+        txrDescr.setText(tblPromem.getModel().getValueAt(tblPromem.getSelectedRow(),0).toString());
+        ckbAllarme.setEnabled(true);
+        Object allarme = tblPromem.getModel().getValueAt(tblPromem.getSelectedRow(),1);
+        
+        if ( "-".equals(allarme) )
+        {
+            ckbAllarme.setSelected(false);
+            spnAllarme.setEnabled(false);
+        }
+        else
+        {
+            ckbAllarme.setSelected(true);
+            spnAllarme.setEnabled(true);
+            try
+            {
+                spnAllarme.setValue( (new SimpleDateFormat("dd-MM-yyyy hh.mm")).parse(allarme.toString()) );
+            }
+            catch(Exception e){e.printStackTrace();}
+        }
+    }//GEN-LAST:event_tblPromemMouseClicked
+
+    private void ckbAllarmeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ckbAllarmeActionPerformed
+        // TODO add your handling code here:
+        if ( ckbAllarme.isSelected() )
+        {
+            spnAllarme.setEnabled(true);
+        }
+        else
+        {
+            spnAllarme.setEnabled(false);
+        }
+    }//GEN-LAST:event_ckbAllarmeActionPerformed
 
     /**
      * @param args the command line arguments
@@ -278,19 +457,96 @@ public class MainForm extends javax.swing.JFrame {
         });
     }
 
+    private void gestione_chiusura()
+    {
+        if (    JOptionPane.showConfirmDialog(
+                    null,
+                    "Confermi il Backup e la chiusura del programma?",
+                    "Backup e Uscita da "+this.getTitle()+"...",
+                    JOptionPane.OK_CANCEL_OPTION,JOptionPane.WARNING_MESSAGE )
+             
+                ==
+            
+                JOptionPane.OK_OPTION )
+        {
+            // Inserire qui il proprio codice di backup!
+
+            System.exit(0);
+        }
+    }
+    
+    public void run()
+    {
+        Date allarme , allarmePrec, attuale ;
+        
+        int confronto, confrontoPrec ;
+
+        
+        allarmePrec = (Date)spnAllarme.getValue() ;
+        
+        confrontoPrec = -1 ;
+        
+        while(true)
+        {
+            try
+            {
+                Thread.sleep( 1000 ) ;
+
+                allarme = (Date)spnAllarme.getValue() ;
+                
+                attuale = Date.from( Instant.now() ) ;
+                
+                if ( allarme.compareTo(allarmePrec) != 0 )
+                {
+                    allarmePrec = allarme ;
+                    
+                    confrontoPrec = -1 ;
+                }
+                
+                confronto = attuale.compareTo( allarme ) ;
+                
+                System.out.println( allarmePrec+" | "+allarme+" | "+attuale+" | "+confrontoPrec+" | "+confronto ) ;
+
+                if ( confronto > confrontoPrec )
+                {
+                    System.out.println( "Allarme!" ) ;
+                    
+                    JOptionPane.showMessageDialog(
+                        null ,
+                        txrDescr.getText() ,
+                        "Allarme Promemoria" ,
+                        JOptionPane.INFORMATION_MESSAGE ) ;
+                    
+                    confrontoPrec = confronto ;
+                }
+                    
+            }
+            catch(Exception e){e.printStackTrace();}
+        }
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnUscita;
+    private javax.swing.JCheckBox ckbAllarme;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSpinner jSpinner1;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel lblStato;
     private javax.swing.JLayeredPane lypAllievi;
     private javax.swing.JLayeredPane lypCorsi;
+    private javax.swing.JLayeredPane lypPromem;
+    private javax.swing.JSpinner spnAllarme;
     private javax.swing.JTable tblAllievi;
     private javax.swing.JTable tblCorsi;
+    private javax.swing.JTable tblPromem;
+    private javax.swing.JTextArea txrDescr;
     private javax.swing.JTextField txtNome;
     // End of variables declaration//GEN-END:variables
 }

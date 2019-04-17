@@ -1,0 +1,2 @@
+Questa è una nota e quindi non ha l'allarme.::-
+Questa è un promemoria e quindi ha l'allarme.::30-04-2019 9.00

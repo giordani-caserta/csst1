@@ -1,2 +1,2 @@
-Fondamenti di Informatica,80,20-03-2019,20-05-2019
-Basi di Java,80,20-05-2019,20-07-2019
+Fondamenti di Informatica::80::20-03-2019::20-05-2019
+Basi di Java::80::20-05-2019::20-07-2019
